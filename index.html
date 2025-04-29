@@ -144,3 +144,108 @@ tr:hover {
   
    <script type="module">
     import { ambilDaftartodolist, ubahtodolist2, ubahtodolist, hapustodolist} from './main.js';
+    
+    $(document).ready(async function () {
+    await renderTabel();
+  let elemenDaftar = $("#todolist > tbody");
+  let daftartodolist = await ambilDaftartodolist();
+  
+    // Tambahkan sorting sebelum tampil
+  daftartodolist.sort((a, b) => {
+    if (a.status === "Selesai" && b.status !== "Selesai") return -1;
+    if (a.status !== "Selesai" && b.status === "Selesai") return 1;
+    return 0;
+  });
+  
+    let nomor = 1;
+  daftartodolist.forEach((data) => {
+    
+    elemenDaftar.append(
+      '<tr>' +
+      '<th>' + nomor + '</th>' +
+      '<td>' + data.Namatugas + '</td>' +
+      '<td>' + data.prioritas + '</td>' +
+      '<td><button class="btn btn-success tombol-status" data-id="' + data.id + '" data-status="' + data.status + '">' + data.status + '</button></td>' +
+      '<td>' + data.tanggal + '</td>' +
+      '<td class="stack-up">' +
+      ' <a href="#" class="btn btn-warning link-ubah" data="' + data.id + '">ubah</a> ' +
+      ' <button class="btn btn-danger tombol-hapus" data="' + data.id + '">Hapus</button>' +
+      '</td>' +
+      '</tr>'
+    );
+    nomor++;
+  });
+
+  // lanjutkan event klik seperti biasa...
+
+      $('.tombol-hapus').click(async function () {
+        await hapustodolist($(this).attr('data'));
+        location.reload();
+      });
+
+      $('.link-ubah').click(function () {
+        window.location.replace('ubah-todolist.html?docId=' + $(this).attr('data'));
+      });
+
+      $('#loader').hide();
+    });
+    async function renderTabel() {
+  let elemenBelumSelesai = $("#todolist-belum-selesai > tbody");
+  let elemenSelesai = $("#todolist-selesai > tbody");
+  elemenBelumSelesai.empty(); // Bersihkan tabel belum selesai
+  elemenSelesai.empty(); // Bersihkan tabel selesai
+
+  let daftartodolist = await ambilDaftartodolist();
+
+  let nomorBelumSelesai = 1;
+  let nomorSelesai = 1;
+
+  daftartodolist.forEach((data) => {
+    const row = `
+      <tr>
+        <th>${data.status === "Selesai" ? nomorSelesai++ : nomorBelumSelesai++}</th>
+        <td>${data.Namatugas}</td>
+        <td>${data.prioritas}</td>
+        <td>
+          <button class="btn btn-success tombol-status" data-id="${data.id}" data-status="${data.status}">
+            ${data.status}
+          </button>
+        </td>
+        <td>${data.tanggal}</td>
+        <td class="stack-up">
+          <a href="#" class="btn btn-warning link-ubah" data="${data.id}">Ubah</a>
+          <button class="btn btn-danger tombol-hapus" data="${data.id}">Hapus</button>
+        </td>
+      </tr>
+    `;
+
+if (data.status === "Selesai") {
+      elemenSelesai.append(row);
+    } else {
+      elemenBelumSelesai.append(row);
+    }
+  });
+
+  $('#loader').hide();
+}
+
+    // Event untuk mengubah status
+$(document).on('click', '.tombol-status', async function () {
+    const id = $(this).attr('data-id');
+    const row = $(this).closest('tr'); // Ambil baris tabel terkait
+    const namaTugas = row.find('td:nth-child(2)').text(); // Ambil nama tugas
+    const prioritas = row.find('td:nth-child(3)').text(); // Ambil prioritas
+    const tanggal = row.find('td:nth-child(5)').text(); // Ambil tanggal
+    let statusSekarang = $(this).attr('data-status');
+    let statusBaru = statusSekarang === 'Selesai' ? 'Belum Selesai' : 'Selesai';
+    
+        // Pastikan semua parameter memiliki nilai valid
+    await ubahtodolist(id, namaTugas, prioritas, statusBaru, tanggal);
+
+    await renderTabel(); // Render ulang tabel tanpa reload halaman
+  });
+  </script>
+
+</body>
+
+</html>
