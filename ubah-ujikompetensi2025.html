@@ -16,3 +16,114 @@
     .form-control, .form-select, .btn {
       border: 2px solid blue; /* Blue border for input fields and buttons */
     }
+    
+        .form-control:focus, .form-select:focus {
+      border-color: blue; /* Ensure blue border is highlighted on focus */
+      box-shadow: 0 0 5px rgba(0, 0, 255, 0.5); /* Optional: add a subtle shadow effect */
+    }
+    
+        /* Styling for the body background */
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('background.jpg'); /* Your background image */
+      background-size: cover; /* Ensures the image covers the entire page */
+      background-position: center; /* Centers the image */
+      background-attachment: fixed; /* Keeps the image fixed during scroll */
+      margin: 0;
+      padding: 0;
+    }
+    
+        /* Additional Styling for the header */
+    header {
+      background-color: rgba(248, 249, 250, 0.7); /* Semi-transparent background */
+      padding: 10px;
+      text-align: center;
+      color: black;
+    }
+
+    /* Dropdown button styling */
+    .dropdown-menu {
+      border: 2px solid blue;
+    }
+
+    .btn {
+      border: 2px solid blue;
+    }
+
+    /* Style for the dropdown */
+    .btn-secondary {
+      border-color: blue;
+    }
+  </style>
+
+</head>
+
+<body class="m-4">
+
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Tombol</button>
+    <ul class="dropdown-menu dropdown-menu-dark">
+      <li><a class="dropdown-item active" href="index.html">Lihat daftar jenis todolist</a></li>
+    </ul>
+  </div>
+  
+   <h1>Ubah</h1>
+
+  <form class="mb-3">
+    <div class="mb-3">
+      <label class="form-label">Nama tugas</label>
+      <input type="text" class="form-control" id="input-Nama tugas">
+    </div>
+    <div class="mb-3">
+      <select class="form-select" aria-label="Default select example" id="input-prioritas">
+        <option selected>Prioritas</option>
+        <option value="tinggi">Tinggi</option>
+        <option value="Sedang">Sedang</option>
+        <option value="rendah">Rendah</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <select class="form-select" aria-label="Default select example" id="input-status">
+        <option selected>Status</option>
+        <option value="Selesai">selesai</option>
+        <option value="belum selesai">belum selesai</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Tanggal</label>
+      <input type="date" class="form-control" id="input-tanggal">
+    </div>
+    
+    <button type="submit" class="btn btn-primary" id="tombol-ubah">Ubah</button>
+  </form>
+
+  <script type="module">
+    import { ambiltodolist, ubahtodolist } from './main.js';
+
+    let tombolUbah = document.getElementById('tombol-ubah');
+    let elemenNamatugas = document.getElementById('input-Nama tugas');
+    let elemenprioritas = document.getElementById('input-prioritas');
+    let elemenstatus = document.getElementById('input-status');
+    let elementanggal = document.getElementById('input-tanggal');
+
+    const queryString = window.location.search
+    const parameterURL = new URLSearchParams(queryString);
+    const docId = parameterURL.get('docId')
+    const daftar = await ambiltodolist(docId);
+
+elemenNamatugas.value = daftar.Namatugas;
+    elemenprioritas.value = daftar.prioritas;
+    elemenstatus.value = daftar.status;
+    elementanggal.value = daftar.tanggal;
+
+    tombolUbah.addEventListener('click', async function(el) {
+      el.preventDefault();
+      await ubahtodolist(docId, elemenNamatugas.value, elemenprioritas.value, elemenstatus.value, elementanggal.value);
+      window.location.href = 'index.html';
+    });
+  </script>
+  
+</body>
+
+</html>
+
