@@ -18,3 +18,84 @@
     <h2>SMk insan Cemerlang</h2>
     <p>kelola tugas anda dengan efisien</p>
   </div>
+  
+    <!-- Audio Player Section -->
+  <div class="audio-player mb-3">
+    <h4>Enjoy dulu ga si Music</h4>
+    <audio controls>
+      <source src="musik.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+  
+    <!-- Dropdown -->
+  <div class="dropdown mb-3">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      tambah
+    </button>
+    <ul class="dropdown-menu dropdown-menu-dark">
+      <li><a class="dropdown-item active" href="form-todolist.html">tambah data</a></li>
+    </ul>
+  </div>
+  
+    <!-- Table -->
+  <h1 class="text-white">Tugas Belum Selesai</h1>
+  <table class="table" id="todolist-belum-selesai">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nama tugas</th>
+        <th>Prioritas</th>
+        <th>Status</th>
+        <th>Tanggal</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  
+    <h1 class="text-white">Tugas Selesai</h1>
+  <table class="table" id="todolist-selesai">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nama tugas</th>
+        <th>Prioritas</th>
+        <th>Status</th>
+        <th>Tanggal</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  
+    <!-- Loader -->
+  <div class="d-flex justify-content-center">
+    <img src="loader.gif" style="width: 1em; display: block" id="loader">
+  </div>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      border: 2px solid #000000; /* Hitam menyala */
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+th,
+    td {
+      padding: 10px;
+      border: 1px solid #000000; /* Hitam menyala */
+      text-align: left;
+    }
